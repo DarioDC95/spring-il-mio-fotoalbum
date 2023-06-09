@@ -1,5 +1,9 @@
 package org.java.demo;
 
+import org.java.demo.auth.pojo.Role;
+import org.java.demo.auth.pojo.User;
+import org.java.demo.auth.serv.RoleServ;
+import org.java.demo.auth.serv.UserServ;
 import org.java.demo.pojo.Category;
 import org.java.demo.pojo.Picture;
 import org.java.demo.serv.CategoryServ;
@@ -8,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
 public class SpringIlMioFotoalbumApplication implements CommandLineRunner {
@@ -17,6 +22,12 @@ public class SpringIlMioFotoalbumApplication implements CommandLineRunner {
 	
 	@Autowired
 	CategoryServ categoryServ;
+	
+	@Autowired
+	private RoleServ roleServ;
+	
+	@Autowired
+	private UserServ userServ;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringIlMioFotoalbumApplication.class, args);
@@ -24,6 +35,16 @@ public class SpringIlMioFotoalbumApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		
+		Role roleAdmin = new Role("ADMIN");
+		
+		roleServ.save(roleAdmin);
+		
+		final String pws = new BCryptPasswordEncoder().encode("pws");
+		
+		User userAdmin = new User("admin", pws, roleAdmin);
+				
+		userServ.save(userAdmin);
 		
 		Category c1 = new Category("Still life");
 		Category c2 = new Category("Street photography");

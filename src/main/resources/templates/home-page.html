@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>Hello, World!</h1>
+	<a
+		href="/login"
+		sec:authorize="!isAuthenticated()"
+	>LOGIN</a>
+	<a
+		href="/picture/index"
+		sec:authorize="hasAuthority('ADMIN')"
+	>VAI ALLE FOTO</a>
+	<a
+		href="/logout"
+		sec:authorize="hasAuthority('ADMIN')"
+	>LOGOUT</a>
+</body>
+</html>

@@ -29,7 +29,7 @@ public class PictureServ {
 		
 		return pictureRepo.save(picture);
 	}
-	public List<Picture> getPicturesByTitle(String title) {
+	public List<Picture> findPicturesByTitle(String title) {
 		
 		return pictureRepo.findByTitleContaining(title);
 	}

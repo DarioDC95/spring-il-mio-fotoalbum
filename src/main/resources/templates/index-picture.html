@@ -28,7 +28,7 @@
 				<div class="col-12">
 					<div class="d-flex justify-content-between">
 						<div class="w-50">
-							<form method="POST">
+							<form th:action="@{/picture/by/title}" method="POST">
 								<div class="input-group mb-3">
 								  	<span class="input-group-text" id="basic-addon1">Titolo della Foto</span>
 								  	<input type="text" class="form-control" placeholder="titolo" aria-label="Username" aria-describedby="basic-addon1"
@@ -70,9 +70,9 @@
 						     			<img alt="foto pizza" th:src="*{url}">
 						     		</td>
 							    	<td>[[ *{visible ? "si" : "no"} ]]</td>
-							    	<th>
+							    	<td>
 							    		<div class="btn-group" role="group" aria-label="Basic example">
-										  	<a class="btn btn-primary">
+										  	<a th:href="@{/picture/show/{id} (id=*{id})}" class="btn btn-primary">
 										  		<i class="fa-solid fa-eye"></i>
 										  	</a>
 										  	<a class="btn btn-warning">
@@ -82,7 +82,7 @@
 										  		<i class="fa-solid fa-trash-can"></i>
 										  	</a>
 										</div>
-							    	</th>
+							    	</td>
 							  	</tr>
 							</tbody>
 						</table>

@@ -54,7 +54,7 @@ public class Picture {
 		this.id = id;
 	}
 	public String getTitle() {
-		return description;
+		return title;
 	}
 	public void setTitle(String title) {
 		this.title = title;
@@ -86,5 +86,14 @@ public class Picture {
 	@JsonSetter
 	public void setCategories(Category[] categories) {
 		setCategories(Arrays.asList(categories));
+	}
+	
+	@Override
+	public String toString() {
+		
+		return "[" + getId() + "] " + getTitle()
+				+ "\nDescrizione: " + getDescription() 
+				+ "\nFoto: " + getUrl()
+				+ "\nVisibilità: " + isVisible();
 	}
 }

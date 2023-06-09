@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<!-- Bootstrap CSS -->
+	<link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css}"/>
+	<!-- Fontawesome -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
+	integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" 
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<title>Insert title here</title>
+</head>
+<body>
+	<main>
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<div>
+						<h1 class="mb-3">La Foto selezionata: </h1>
+					</div>
+				</div>
+				<div 
+				class="col-12"
+				th:object="${picture}"
+				>
+					<div class="card mb-3 flex-row">
+					  	<img class="card-img-top w-25" alt="Foto pizza" th:src="*{url}">
+					 	<div class="card-body d-flex flex-row justify-content-around">
+					 		<div class="me-4">
+						    	<h2 class="card-title">[[ *{title} ]]</h2>
+						    	<p class="card-text">[[ *{description} ]]</p>
+						    	<h4>Visibilità: <span class="badge bg-secondary">[[ *{visible ? "si" : "no"} ]]</span></h4>
+					 		</div>
+					 		<div th:if="${categories.size() > 0}">
+					 			<p class="card-text">
+					 				Categorie associate:
+							    	<ul>
+									  	<li
+									  	th:each="category : ${categories}"
+									  	th:object="${category}"
+									  	>
+									  		[[ *{name} ]]
+									  	</li>
+									</ul>
+						    	</p>
+					 		</div>
+					  	</div>
+					</div>
+					<a th:href="@{/picture/index}" type="submit" class="btn btn-primary">Back</a>
+				</div>
+			</div>		
+		</div>	
+	</main>
+	
+	<script th:src="@{/webjars/bootstrap/5.2.3/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>
