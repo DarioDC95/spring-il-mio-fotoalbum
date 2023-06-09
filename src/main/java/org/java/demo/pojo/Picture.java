@@ -71,7 +71,7 @@ public class Picture {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	public Boolean getVisible() {
+	public Boolean isVisible() {
 		return visible;
 	}
 	public void setVisible(Boolean visible) {

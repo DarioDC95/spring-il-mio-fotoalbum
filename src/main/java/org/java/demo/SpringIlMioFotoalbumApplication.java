@@ -50,11 +50,11 @@ public class SpringIlMioFotoalbumApplication implements CommandLineRunner {
 		Picture p2 = new Picture("Nebulosa", "Nascita di stelle", "https://picsum.photos/300/200", 
 				true, c3);
 		Picture p3 = new Picture("L'orologio", "Il passare del tempo", "https://picsum.photos/300/200", 
-				true, new Category[] {c1, c2, c4});
+				false, new Category[] {c1, c2, c4});
 		Picture p4 = new Picture("La Barriera Corallina", "La convivenza di specie marine", "https://picsum.photos/300/200", 
 				true, new Category[] {c7, c9, c6, c5, c4});
 		Picture p5 = new Picture("Ritratto di guerra", "Le causalità dei conflitti", "https://picsum.photos/300/200", 
-				true);
+				false);
 		
 		pictureServ.save(p1);
 		pictureServ.save(p2);
