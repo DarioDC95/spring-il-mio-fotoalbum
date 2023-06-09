@@ -21,16 +21,16 @@ public class Picture {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@NotBlank
+	@NotBlank(message = "Il titolo non deve essere vuoto")
 	private String title;
 	
-	@NotBlank
+	@NotBlank(message = "La Descrizione non deve essere vuota")
 	private String description;
 	
-	@NotBlank
+	@NotBlank(message = "L'url non deve essere vuoto")
 	private String url;
 	
-	@NotNull
+	@NotNull(message = "La visibilità non deve essere vuota")
 	private Boolean visible;
 	
 	@JsonIgnoreProperties("pictures")
@@ -86,6 +86,10 @@ public class Picture {
 	@JsonSetter
 	public void setCategories(Category[] categories) {
 		setCategories(Arrays.asList(categories));
+	}
+	
+	public boolean containsCategory(Category category) {
+		return getCategories() != null ? getCategories().contains(category) : false;
 	}
 	
 	@Override

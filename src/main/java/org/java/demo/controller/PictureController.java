@@ -79,6 +79,17 @@ public class PictureController {
 		return "show-picture";
 	}
 	
+	@GetMapping("/create")
+	public String createPizza(Model model) {
+		
+		List<Category> categories = categoryServ.findAll();
+		
+		model.addAttribute("categories", categories);
+		model.addAttribute("picture", new Picture());
+		
+		return "create-picture";
+	}
+	
 	@PostMapping("/create")
 	public String storePizza(Model model, @Valid @ModelAttribute Picture picture, BindingResult bindingResult) {
 		
@@ -93,7 +104,7 @@ public class PictureController {
 			model.addAttribute("picture", picture);
 			model.addAttribute("errors", bindingResult);
 			
-			return "create-pizza";
+			return "create-picture";
 		}
 		
 		pictureServ.save(picture);

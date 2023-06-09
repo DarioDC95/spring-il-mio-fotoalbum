@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<!-- Bootstrap CSS -->
+	<link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css}"/>
+	<title>Insert title here</title>
+</head>
+<body>
+	<main>
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<div class="w-100 d-flex justify-content-between align-items-center">
+						<h1 class="mb-3">Aggiungi la tua Foto</h1>
+						<a th:href="@{/picture/index}" type="submit" class="btn btn-primary">Back</a>
+					</div>
+				</div>
+				<div class="col-12">
+					<form method="POST">
+						<div class="mb-3">
+						  	<label for="name" class="form-label">Titolo</label>
+						  	<input type="text" class="form-control" id="title" placeholder="titolo della foto" 
+						  	name="title" th:value="${picture.title}">
+						  	<label 
+							style="color: red"
+							th:if="${errors != null && errors.hasFieldErrors('title')}"
+							>
+								[[ ${errors.getFieldError('title').defaultMessage} ]]
+							</label>
+						</div>
+						<div class="mb-3">
+						  	<label for="description" class="form-label">Descrizione</label>
+						  	<input type="text" class="form-control" id="description" placeholder="description" 
+						  	name="description" th:value="${picture.description}">
+						  	<label 
+							style="color: red"
+							th:if="${errors != null && errors.hasFieldErrors('description')}"
+							>
+								[[ ${errors.getFieldError('description').defaultMessage} ]]
+							</label>
+						</div>
+						<div class="mb-3">
+						  	<label for="picture" class="form-label">Foto</label>
+						  	<input type="text" class="form-control" id="url" placeholder="url dell'immagine" 
+						  	name="url" th:value="${picture.url}">
+						  	<label 
+							style="color: red"
+							th:if="${errors != null && errors.hasFieldErrors('url')}"
+							>
+								[[ ${errors.getFieldError('url').defaultMessage} ]]
+							</label>
+						</div>
+						<div class="mb-3">
+						  	<label for="price" class="form-label">Visibilità</label>
+						  	<div class="form-check">
+							  	<input class="form-check-input" type="radio" value="false" name="visible" 
+							  	th:checked="!${picture.visible}">
+							  	<label class="form-check-label" for="visible">
+							    	NO
+							  	</label>
+							</div>
+							<div class="form-check">
+							  	<input class="form-check-input" type="radio" value="true" name="visible" 
+							  	th:checked="${picture.visible}">
+							  	<label class="form-check-label" for="visible">
+							    	SI
+							  	</label>
+							</div>
+						</div>
+						<div class="mb-3">
+						  	<label for="price" class="form-label">Categorie: </label>
+						  	<div 
+						  	class="form-check"
+						  	th:each="category : ${categories}"
+						  	th:object="${category}"
+						  	>
+							  	<input class="form-check-input" type="checkbox" value="" name="categories" 
+							  	th:id="'category-' + *{id}" th:value="*{id}" th:checked="${picture.containsCategory(category)}">
+							  	<label class="form-check-label" th:for="'category-' + *{id}">
+							    	[[ *{name} ]]
+							  	</label>
+							</div>
+						</div>
+						<div>
+						    <button type="submit" value="CREATE" class="btn btn-primary mb-3">Conferma Foto</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>		
+	</main>
+	
+	<script th:src="@{/webjars/bootstrap/5.2.3/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>
