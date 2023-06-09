@@ -52,7 +52,7 @@ public class PictureController {
 	}
 	
 	@GetMapping("/show/{id}")
-	public String show(Model model, @PathVariable(required = true) int id) {
+	public String show(Model model, @PathVariable("id") int id) {
 		
 		Optional<Picture> optPicture = null;
 		
@@ -80,7 +80,7 @@ public class PictureController {
 	}
 	
 	@GetMapping("/create")
-	public String createPizza(Model model) {
+	public String create(Model model) {
 		
 		List<Category> categories = categoryServ.findAll();
 		
@@ -91,7 +91,7 @@ public class PictureController {
 	}
 	
 	@PostMapping("/create")
-	public String storePizza(Model model, @Valid @ModelAttribute Picture picture, BindingResult bindingResult) {
+	public String store(Model model, @Valid @ModelAttribute Picture picture, BindingResult bindingResult) {
 		
 		if (bindingResult.hasErrors()) {
 			
@@ -105,6 +105,56 @@ public class PictureController {
 			model.addAttribute("errors", bindingResult);
 			
 			return "create-picture";
+		}
+		
+		pictureServ.save(picture);
+		
+		return "redirect:/picture/index";
+	}
+	
+	@GetMapping("edit/{id}")
+	public String edit(Model model, @PathVariable("id") int id) {
+		
+		Optional<Picture> optPicture = null;
+		
+		try {
+			
+			optPicture = pictureServ.findByIdWithCategories(id);
+		} catch(NoSuchElementException e) {
+			
+			String error = "Elemento non trovato";
+			List<Picture> pictures = pictureServ.findAll();
+			
+			model.addAttribute("pictures", pictures);
+			model.addAttribute("error", error);
+			
+			return "index-picture";
+		}
+		
+		Picture picture = optPicture.get();
+		List<Category> categories = categoryServ.findAll();
+		
+		model.addAttribute("categories", categories);
+		model.addAttribute("picture", picture);
+		
+		return "edit-picture";
+	}
+	
+	@PostMapping("edit/{id}")
+	public String update(Model model, @ModelAttribute Picture picture, BindingResult bindingResult) {
+		
+		if (bindingResult.hasErrors()) {
+			
+			for (ObjectError err : bindingResult.getAllErrors()) 
+				System.err.println("error: " + err.getDefaultMessage());
+			
+			List<Category> categories = categoryServ.findAll();
+			
+			model.addAttribute("categories", categories);
+			model.addAttribute("picture", picture);
+			model.addAttribute("errors", bindingResult);
+			
+			return "edit-picture";
 		}
 		
 		pictureServ.save(picture);

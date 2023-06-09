@@ -50,20 +50,20 @@ public class Category {
 		this.pictures = pictures;
 	}
 	
-//	@Override
-//	public boolean equals(Object obj) {
-//		
-//		if (!(obj instanceof Category)) return false;
-//		
-//		Category cObj = (Category) obj;
-//		
-//		return getId() == cObj.getId();
-//	}
-//	@Override
-//	public int hashCode() {
-//		
-//		return getId();
-//	}
+	@Override
+	public boolean equals(Object obj) {
+		
+		if (!(obj instanceof Category)) return false;
+		
+		Category cObj = (Category) obj;
+		
+		return getId() == cObj.getId();
+	}
+	@Override
+	public int hashCode() {
+		
+		return getId();
+	}
 	
 	@Override
 	public String toString() {
