@@ -115,12 +115,9 @@ public class PictureController {
 	@GetMapping("edit/{id}")
 	public String edit(Model model, @PathVariable("id") int id) {
 		
-		Optional<Picture> optPicture = null;
+		Optional<Picture> optPicture = pictureServ.findById(id);
 		
-		try {
-			
-			optPicture = pictureServ.findByIdWithCategories(id);
-		} catch(NoSuchElementException e) {
+		if(optPicture.isEmpty()) {
 			
 			String error = "Elemento non trovato";
 			List<Picture> pictures = pictureServ.findAll();
@@ -158,6 +155,29 @@ public class PictureController {
 		}
 		
 		pictureServ.save(picture);
+		
+		return "redirect:/picture/index";
+	}
+	
+	@GetMapping("/delete/{id}")
+	public String delete(Model model, @PathVariable("id") int id) {
+		
+		Optional<Picture> optPicture = pictureServ.findById(id);
+		
+		if(optPicture.isEmpty()) {
+			
+			String error = "Elemento non trovato";
+			List<Picture> pictures = pictureServ.findAll();
+			
+			model.addAttribute("pictures", pictures);
+			model.addAttribute("error", error);
+			
+			return "index-picture";
+		}
+		
+		Picture picture = optPicture.get();
+		
+		pictureServ.delete(picture);
 		
 		return "redirect:/picture/index";
 	}
