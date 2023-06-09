@@ -18,7 +18,7 @@ public class Category {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@NotBlank
+	@NotBlank(message = "Il nome non deve essere vuoto")
 	private String name;
 	
 	@JsonIgnoreProperties("categories")

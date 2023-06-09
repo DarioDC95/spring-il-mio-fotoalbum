@@ -87,6 +87,9 @@ public class Picture {
 	public void setCategories(Category[] categories) {
 		setCategories(Arrays.asList(categories));
 	}
+	public void removeCategory(Category category) {
+		getCategories().remove(category);
+	}
 	
 	public boolean containsCategory(Category category) {
 		return getCategories() != null ? getCategories().contains(category) : false;

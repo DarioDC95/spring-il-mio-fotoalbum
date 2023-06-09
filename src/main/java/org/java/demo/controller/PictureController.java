@@ -138,7 +138,7 @@ public class PictureController {
 	}
 	
 	@PostMapping("edit/{id}")
-	public String update(Model model, @ModelAttribute Picture picture, BindingResult bindingResult) {
+	public String update(Model model, @Valid @ModelAttribute Picture picture, BindingResult bindingResult) {
 		
 		if (bindingResult.hasErrors()) {
 			
