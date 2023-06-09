@@ -15,7 +15,7 @@ import jakarta.transaction.Transactional;
 public class PictureServ {
 	
 	@Autowired
-	PictureRepo pictureRepo;
+	private PictureRepo pictureRepo;
 	
 	public List<Picture> findAll() {
 		

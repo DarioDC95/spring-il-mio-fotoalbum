@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class CategoryServ {
 
 	@Autowired
-	CategoryRepo categoryRepo;
+	private CategoryRepo categoryRepo;
 	
 	public List<Category> findAll() {
 		

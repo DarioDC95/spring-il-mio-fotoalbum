@@ -18,10 +18,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class SpringIlMioFotoalbumApplication implements CommandLineRunner {
 	
 	@Autowired
-	PictureServ pictureServ;
+	private PictureServ pictureServ;
 	
 	@Autowired
-	CategoryServ categoryServ;
+	private CategoryServ categoryServ;
 	
 	@Autowired
 	private RoleServ roleServ;
