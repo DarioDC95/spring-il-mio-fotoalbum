@@ -18,10 +18,10 @@ public class Contact {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@NotBlank(message = "La Descrizione non deve essere vuota")
+	@NotBlank(message = "La Mail non deve essere vuota")
 	private String email;
 	
-	@NotBlank(message = "La Descrizione non deve essere vuota")
+	@NotBlank(message = "Il Messaggio non deve essere vuoto")
 	@Length(max = 65535)
 	private String message;
 	

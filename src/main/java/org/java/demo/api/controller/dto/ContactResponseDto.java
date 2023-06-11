@@ -3,10 +3,13 @@ package org.java.demo.api.controller.dto;
 import org.java.demo.pojo.Contact;
 import org.springframework.validation.BindingResult;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 public class ContactResponseDto {
 
 	private Contact contact;
 	
+	@JsonSerialize(using = BindingResultSerializer.class)
 	private BindingResult bindingResult;
 	
 	public ContactResponseDto(Contact contact) {
