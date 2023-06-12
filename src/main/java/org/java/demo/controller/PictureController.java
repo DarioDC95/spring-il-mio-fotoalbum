@@ -3,12 +3,15 @@ package org.java.demo.controller;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import org.java.demo.auth.pojo.User;
 import org.java.demo.pojo.Category;
 import org.java.demo.pojo.Picture;
 import org.java.demo.serv.CategoryServ;
 import org.java.demo.serv.PictureServ;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,18 +36,32 @@ public class PictureController {
 	private CategoryServ categoryServ;
 
 	@GetMapping("/index")
-	public String index(Model model) {
+	public String index(Model model, Authentication authentication) {
 		
-		List<Picture> pictures = pictureServ.findAll();
+		User user = (User) authentication.getPrincipal();
+		int userId = user.getId();
+		
+		List<Picture> pictures = pictureServ.findPicturesByUserId(userId);
 		model.addAttribute("pictures", pictures);
 		
 		return "index-picture";
 	}
 	
 	@PostMapping("/by/title")
-	public String getPizzasByName(Model model, @RequestParam(required = false) String title) {
+	public String getPizzasByName(Model model, Authentication authentication, @RequestParam(required = false) String title) {
 		
-		List<Picture> pictures = pictureServ.findPicturesByTitle(title);
+		User user = (User) authentication.getPrincipal();
+		
+		List<Picture> pictures = null;
+		
+		if(user.getRoles().stream().map(a -> a.getName()).collect(Collectors.toList()).contains("ADMIN")) {
+			
+			int userId = user.getId();
+			pictures = pictureServ.findPicturesByTitle(title, userId);
+		} else {
+			
+			pictures = pictureServ.findPicturesByTitle(title);
+		}
 		
 		model.addAttribute("pictures", pictures);
 		
@@ -52,10 +69,11 @@ public class PictureController {
 	}
 	
 	@GetMapping("/show/{id}")
-	public String show(Model model, @PathVariable("id") int id) {
+	public String show(Model model, Authentication authentication, @PathVariable("id") int id) {
+		
+		User user = (User) authentication.getPrincipal();
 		
 		Optional<Picture> optPicture = null;
-		
 		try {
 			
 			optPicture = pictureServ.findByIdWithCategories(id);
@@ -71,6 +89,11 @@ public class PictureController {
 		}
 		
 		Picture picture = optPicture.get();
+		if(user.getPictures().contains(picture) == false) {
+			
+			return "redirect:/picture/index";
+		}
+		
 		List<Category> categories = picture.getCategories();
 		
 		model.addAttribute("picture", picture);
@@ -80,18 +103,22 @@ public class PictureController {
 	}
 	
 	@GetMapping("/create")
-	public String create(Model model) {
+	public String create(Model model, Authentication authentication) {
+		
+		User user = (User) authentication.getPrincipal();
+		int userId = user.getId();
 		
 		List<Category> categories = categoryServ.findAll();
 		
 		model.addAttribute("categories", categories);
 		model.addAttribute("picture", new Picture());
+		model.addAttribute("userId", userId);
 		
 		return "create-picture";
 	}
 	
 	@PostMapping("/create")
-	public String store(Model model, @Valid @ModelAttribute Picture picture, BindingResult bindingResult) {
+	public String store(Model model, Authentication authentication, @Valid @ModelAttribute Picture picture, BindingResult bindingResult) {
 		
 		if (bindingResult.hasErrors()) {
 			
@@ -99,9 +126,12 @@ public class PictureController {
 				System.err.println("error: " + err.getDefaultMessage());
 			
 			List<Category> categories = categoryServ.findAll();
+			User user = (User) authentication.getPrincipal();
+			int userId = user.getId();
 			
 			model.addAttribute("categories", categories);
 			model.addAttribute("picture", picture);
+			model.addAttribute("userId", userId);
 			model.addAttribute("errors", bindingResult);
 			
 			return "create-picture";

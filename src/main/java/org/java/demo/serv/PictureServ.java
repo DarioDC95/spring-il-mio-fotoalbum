@@ -33,6 +33,14 @@ public class PictureServ {
 		
 		return pictureRepo.findByTitleContaining(title);
 	}
+	public List<Picture> findPicturesByTitle(String title, int id) {
+		
+		return pictureRepo.findByTitleContainingAndUserId(title, id);
+	}
+	public List<Picture> findPicturesByUserId(int user) {
+		
+		return pictureRepo.findByUserId(user);
+	}
 	@Transactional
 	public Optional<Picture> findByIdWithCategories(int id) {
 		

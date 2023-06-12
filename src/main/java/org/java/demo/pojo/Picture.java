@@ -3,6 +3,8 @@ package org.java.demo.pojo;
 import java.util.Arrays;
 import java.util.List;
 
+import org.java.demo.auth.pojo.User;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
@@ -10,7 +12,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -37,13 +41,20 @@ public class Picture {
 	@ManyToMany
 	private List<Category> categories;
 	
+	@JsonIgnoreProperties("pictures")
+	@NotNull
+	@ManyToOne
+	@JoinColumn(nullable = false)
+	private User user;
+	
 	public Picture() { }
-	public Picture(String title, String description, String url, Boolean visible, Category...categories) {
+	public Picture(String title, String description, String url, Boolean visible, User user, Category...categories) {
 		
 		setTitle(title);
 		setDescription(description);
 		setUrl(url);
 		setVisible(visible);
+		setUser(user);
 		setCategories(categories);
 	}
 	
@@ -90,9 +101,30 @@ public class Picture {
 	public void removeCategory(Category category) {
 		getCategories().remove(category);
 	}
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
 	
 	public boolean containsCategory(Category category) {
 		return getCategories() != null ? getCategories().contains(category) : false;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		
+		if (!(obj instanceof Picture)) return false;
+		
+		Picture cObj = (Picture) obj;
+		
+		return getId() == cObj.getId();
+	}
+	@Override
+	public int hashCode() {
+		
+		return getId();
 	}
 	
 	@Override

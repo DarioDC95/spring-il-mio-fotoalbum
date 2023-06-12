@@ -42,9 +42,11 @@ public class SpringIlMioFotoalbumApplication implements CommandLineRunner {
 		
 		final String pws = new BCryptPasswordEncoder().encode("pws");
 		
-		User userAdmin = new User("admin", pws, roleAdmin);
+		User admin1 = new User("admin1", pws, roleAdmin);
+		User admin2 = new User("admin2", pws, roleAdmin);
 				
-		userServ.save(userAdmin);
+		userServ.save(admin1);
+		userServ.save(admin2);
 		
 		Category c1 = new Category("Still life");
 		Category c2 = new Category("Street photography");
@@ -67,15 +69,15 @@ public class SpringIlMioFotoalbumApplication implements CommandLineRunner {
 		categoryServ.save(c9);
 		
 		Picture p1 = new Picture("La Meraviglia", "L'incontro di due oceani", "https://picsum.photos/300/200", 
-				true, new Category[] {c7, c9});
+				true, admin1, new Category[] {c7, c9});
 		Picture p2 = new Picture("Nebulosa", "Nascita di stelle", "https://picsum.photos/300/200", 
-				true, c3);
+				true, admin2, c3);
 		Picture p3 = new Picture("L'orologio", "Il passare del tempo", "https://picsum.photos/300/200", 
-				false, new Category[] {c1, c2, c4});
+				false, admin2, new Category[] {c1, c2, c4});
 		Picture p4 = new Picture("La Barriera Corallina", "La convivenza di specie marine", "https://picsum.photos/300/200", 
-				true, new Category[] {c7, c9, c6, c5, c4});
+				true, admin1, new Category[] {c7, c9, c6, c5, c4});
 		Picture p5 = new Picture("Ritratto di guerra", "Le causalità dei conflitti", "https://picsum.photos/300/200", 
-				false);
+				false, admin1);
 		
 		pictureServ.save(p1);
 		pictureServ.save(p2);
