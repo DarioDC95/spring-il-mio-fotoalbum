@@ -97,7 +97,7 @@ export default {
 				<div class="col-12">
 					<form @submit.prevent="createcontact()">
 						<div class="mb-3">
-						  	<label for="name" class="form-label">Nome</label>
+						  	<label for="name" class="form-label">Email</label>
 						  	<input type="email" class="form-control" placeholder="nome della contact" 
 						  	name="email" v-model="this.contact.email">
 							<div v-for="(error, index) in errors" :key="index">
@@ -107,7 +107,7 @@ export default {
 							</div>
 						</div>
 						<div class="mb-3">
-						  	<label for="name" class="form-label">Nome</label>
+						  	<label for="name" class="form-label">Messaggio</label>
 						  	<textarea class="form-control" placeholder="nome della contact" 
 						  	name="message" v-model="this.contact.message"></textarea>
 							<div v-for="(error, index) in errors" :key="index">

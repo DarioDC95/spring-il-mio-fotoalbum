@@ -11,7 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class AuthConfiguration {
 
 	@Bean
-	PasswordEncoder passwordEncoder() {
+	public static PasswordEncoder passwordEncoder() {
 		
 //	    return PasswordEncoderFactories.createDelegatingPasswordEncoder();
 		
@@ -19,7 +19,7 @@ public class AuthConfiguration {
 	}
 	
 	@Bean
-	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 	    
 		return 
 			http.csrf(c -> c.disable()).authorizeHttpRequests(a -> a
