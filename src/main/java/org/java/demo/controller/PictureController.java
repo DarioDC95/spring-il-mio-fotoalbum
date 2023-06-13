@@ -72,6 +72,8 @@ public class PictureController {
 	public String show(Model model, Authentication authentication, @PathVariable("id") int id) {
 		
 		User user = (User) authentication.getPrincipal();
+		int userId = user.getId();
+		List<Picture> pictures = null;
 		
 		Optional<Picture> optPicture = null;
 		try {
@@ -80,7 +82,7 @@ public class PictureController {
 		} catch(NoSuchElementException e) {
 			
 			String error = "Elemento non trovato";
-			List<Picture> pictures = pictureServ.findAll();
+			pictures = pictureServ.findPicturesByUserId(userId);
 			
 			model.addAttribute("pictures", pictures);
 			model.addAttribute("error", error);
@@ -89,7 +91,8 @@ public class PictureController {
 		}
 		
 		Picture picture = optPicture.get();
-		if(user.getPictures().contains(picture) == false) {
+		pictures = pictureServ.findPicturesByUserId(userId);
+		if(pictures.contains(picture) == false) {
 			
 			return "redirect:/picture/index";
 		}
@@ -143,14 +146,17 @@ public class PictureController {
 	}
 	
 	@GetMapping("edit/{id}")
-	public String edit(Model model, @PathVariable("id") int id) {
+	public String edit(Model model, Authentication authentication, @PathVariable("id") int id) {
+		
+		User user = (User) authentication.getPrincipal();
+		int userId = user.getId();
+		List<Picture> pictures = pictureServ.findPicturesByUserId(userId);
 		
 		Optional<Picture> optPicture = pictureServ.findById(id);
 		
 		if(optPicture.isEmpty()) {
 			
 			String error = "Elemento non trovato";
-			List<Picture> pictures = pictureServ.findAll();
 			
 			model.addAttribute("pictures", pictures);
 			model.addAttribute("error", error);
@@ -159,16 +165,25 @@ public class PictureController {
 		}
 		
 		Picture picture = optPicture.get();
+		if(pictures.contains(picture) == false) {
+			
+			return "redirect:/picture/index";
+		}
+		
 		List<Category> categories = categoryServ.findAll();
 		
 		model.addAttribute("categories", categories);
 		model.addAttribute("picture", picture);
+		model.addAttribute("userId", userId);
 		
 		return "edit-picture";
 	}
 	
 	@PostMapping("edit/{id}")
-	public String update(Model model, @Valid @ModelAttribute Picture picture, BindingResult bindingResult) {
+	public String update(Model model, Authentication authentication, @Valid @ModelAttribute Picture picture, BindingResult bindingResult) {
+		
+		User user = (User) authentication.getPrincipal();
+		int userId = user.getId();
 		
 		if (bindingResult.hasErrors()) {
 			
@@ -179,6 +194,7 @@ public class PictureController {
 			
 			model.addAttribute("categories", categories);
 			model.addAttribute("picture", picture);
+			model.addAttribute("userId", userId);
 			model.addAttribute("errors", bindingResult);
 			
 			return "edit-picture";
@@ -190,14 +206,17 @@ public class PictureController {
 	}
 	
 	@GetMapping("/delete/{id}")
-	public String delete(Model model, @PathVariable("id") int id) {
+	public String delete(Model model, Authentication authentication, @PathVariable("id") int id) {
+		
+		User user = (User) authentication.getPrincipal();
+		int userId = user.getId();
+		List<Picture> pictures = pictureServ.findPicturesByUserId(userId);
 		
 		Optional<Picture> optPicture = pictureServ.findById(id);
 		
 		if(optPicture.isEmpty()) {
 			
 			String error = "Elemento non trovato";
-			List<Picture> pictures = pictureServ.findAll();
 			
 			model.addAttribute("pictures", pictures);
 			model.addAttribute("error", error);
@@ -206,6 +225,10 @@ public class PictureController {
 		}
 		
 		Picture picture = optPicture.get();
+		if(pictures.contains(picture) == false) {
+			
+			return "redirect:/picture/index";
+		}
 		
 		pictureServ.delete(picture);
 		
