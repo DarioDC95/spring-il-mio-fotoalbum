@@ -14,19 +14,71 @@ export default {
         }
     },
     methods: {
+		isEmailOk() {
+			
+			let email = this.contact.email.trim();
+			let [a, b] = email.split('@');
+			if(b) {
+
+				let [c, d] = b.split('.');
+				if(!d) {
+
+					return false;
+				}
+			} else {
+
+				return false;
+			}
+
+			this.contact.email = email;
+			return true;
+		},
+		isMessageOk() {
+
+			let message = this.contact.message.trim();
+			if(message == '') {
+
+				return false
+			}
+
+			this.contact.message = message;
+			return true;
+		},
         createcontact() {
-            axios.post(store.BASE_API_URL + "/contact/send", this.contact)
-            .then(response => {
-                const contact = response.data.contact;
-                console.log(contact);
-                this.$router.push('/');
-            })
-            .catch(err => {
-				
-				console.log(err)
-				this.errors = err.response.data.bindingResult;
-				console.log(this.errors);
-			});
+			this.errors = [];
+			let email = this.isEmailOk();
+			let message = this.isMessageOk();
+			if(email == false) {
+
+				let object = {
+					field: 'email',
+					defaultMessage: 'inserisci un dominio valido'
+				}
+				this.errors.push(object); 
+			} 
+			if(message == false) {
+
+				let object = {
+					field: 'message',
+					defaultMessage: 'inserisci un messaggio da inviare'
+				}
+				this.errors.push(object); 
+			} 
+			if(email == true && message == true) {
+
+				axios.post(store.BASE_API_URL + "/contact/send", this.contact)
+				.then(response => {
+					const contact = response.data.contact;
+					console.log(contact);
+					this.$router.push('/');
+				})
+				.catch(err => {
+					
+					console.log(err);
+					this.errors = err.response.data.bindingResult;
+					console.log(this.errors);
+				});
+			}
         }
     },
 }
