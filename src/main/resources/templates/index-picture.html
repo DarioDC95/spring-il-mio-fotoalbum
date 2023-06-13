@@ -21,7 +21,7 @@
 						<a th:href="@{/}" type="submit" class="btn btn-primary">Home Page</a>
 					</div>
 						<div>
-						    <a th:href="@{/category/index}" type="submit" class="btn btn-primary">Vai alle Categorie</a>
+						    <a th:href="@{/category/index}" sec:authorize="hasAuthority('ADMIN')" type="submit" class="btn btn-primary">Vai alle Categorie</a>
 						</div>
 					</div>
 				</div>
@@ -45,7 +45,7 @@
 						</div>
 						<div>
 							<div class="col-auto">
-						    	<a th:href="@{/picture/create}" type="submit" class="btn btn-primary">Aggiungi una Foto</a>
+						    	<a th:href="@{/picture/create}" sec:authorize="hasAuthority('ADMIN')" type="submit" class="btn btn-primary">Aggiungi una Foto</a>
 						  	</div>
 						</div>
 					</div>
@@ -78,13 +78,13 @@
 							    	<td>[[ *{visible ? "si" : "no"} ]]</td>
 							    	<td>
 							    		<div class="btn-group" role="group" aria-label="Basic example">
-										  	<a th:href="@{/picture/show/{id} (id=*{id})}" class="btn btn-primary">
+										  	<a th:href="@{/picture/show/{id} (id=*{id})}" sec:authorize="hasAuthority('ADMIN')" class="btn btn-primary">
 										  		<i class="fa-solid fa-eye"></i>
 										  	</a>
 										  	<a th:href="@{/picture/edit/{id} (id=*{id})}" class="btn btn-warning">
 										  		<i class="fa-solid fa-pen-to-square"></i>
 										  	</a>
-										  	<a th:href="@{/picture/delete/{id} (id=*{id})}" class="btn btn-danger">
+										  	<a th:href="@{/picture/delete/{id} (id=*{id})}" sec:authorize="hasAuthority('ADMIN')" class="btn btn-danger">
 										  		<i class="fa-solid fa-trash-can"></i>
 										  	</a>
 										</div>
