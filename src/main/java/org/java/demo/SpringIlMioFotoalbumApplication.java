@@ -37,16 +37,20 @@ public class SpringIlMioFotoalbumApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		
 		Role roleAdmin = new Role("ADMIN");
+		Role roleSuperAdmin = new Role("SUPER_ADMIN");
 		
 		roleServ.save(roleAdmin);
+		roleServ.save(roleSuperAdmin);
 		
 		final String pws = new BCryptPasswordEncoder().encode("pws");
 		
 		User admin1 = new User("admin1", pws, roleAdmin);
 		User admin2 = new User("admin2", pws, roleAdmin);
+		User superAdmin = new User("super_admin", pws, roleSuperAdmin);
 				
 		userServ.save(admin1);
 		userServ.save(admin2);
+		userServ.save(superAdmin);
 		
 		Category c1 = new Category("Still life");
 		Category c2 = new Category("Street photography");

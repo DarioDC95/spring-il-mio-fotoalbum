@@ -39,9 +39,16 @@ public class PictureController {
 	public String index(Model model, Authentication authentication) {
 		
 		User user = (User) authentication.getPrincipal();
-		int userId = user.getId();
 		
-		List<Picture> pictures = pictureServ.findPicturesByUserId(userId);
+		List<Picture> pictures = null;
+		if(user.getRoles().stream().map(a -> a.getName()).collect(Collectors.toList()).contains("SUPER_ADMIN")) {
+			
+			pictures = pictureServ.findAll();
+		} else {
+			
+			int userId = user.getId();
+			pictures = pictureServ.findPicturesByUserId(userId);
+		}
 		model.addAttribute("pictures", pictures);
 		
 		return "index-picture";
@@ -149,8 +156,8 @@ public class PictureController {
 	public String edit(Model model, Authentication authentication, @PathVariable("id") int id) {
 		
 		User user = (User) authentication.getPrincipal();
-		int userId = user.getId();
-		List<Picture> pictures = pictureServ.findPicturesByUserId(userId);
+		Integer userId = null;
+		List<Picture> pictures = null;
 		
 		Optional<Picture> optPicture = pictureServ.findById(id);
 		
@@ -165,6 +172,17 @@ public class PictureController {
 		}
 		
 		Picture picture = optPicture.get();
+		
+		if(user.getRoles().stream().map(a -> a.getName()).collect(Collectors.toList()).contains("SUPER_ADMIN")) {
+			
+			userId = picture.getUser().getId();
+			pictures = pictureServ.findAll();
+		} else {
+			
+			userId = user.getId();
+			pictures = pictureServ.findPicturesByUserId(userId);
+		}
+		
 		if(pictures.contains(picture) == false) {
 			
 			return "redirect:/picture/index";
@@ -183,7 +201,14 @@ public class PictureController {
 	public String update(Model model, Authentication authentication, @Valid @ModelAttribute Picture picture, BindingResult bindingResult) {
 		
 		User user = (User) authentication.getPrincipal();
-		int userId = user.getId();
+		Integer userId = null;
+		if(user.getRoles().stream().map(a -> a.getName()).collect(Collectors.toList()).contains("SUPER_ADMIN")) {
+			
+			userId = picture.getUser().getId();
+		} else {
+			
+			userId = user.getId();
+		}
 		
 		if (bindingResult.hasErrors()) {
 			

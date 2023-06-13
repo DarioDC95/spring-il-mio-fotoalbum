@@ -12,11 +12,11 @@
 	>LOGIN</a>
 	<a
 		href="/picture/index"
-		sec:authorize="hasAuthority('ADMIN')"
+		sec:authorize="hasAnyAuthority('ADMIN', 'SUPER_ADMIN')"
 	>VAI ALLE FOTO</a>
 	<a
 		href="/logout"
-		sec:authorize="hasAuthority('ADMIN')"
+		sec:authorize="hasAnyAuthority('ADMIN', 'SUPER_ADMIN')"
 	>LOGOUT</a>
 </body>
 </html>
