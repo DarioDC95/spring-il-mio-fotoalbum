@@ -46,11 +46,11 @@ public class MyRestController {
 			param = title;
 		}
 		
-		List<Picture> pictures = pictureServ.findPicturesByTitle(param);
+		List<Picture> pictures = pictureServ.findPicturesByTitle(true, param);
 		
 		return new ResponseEntity<>(
-				new PictureResponseDto(pictures),
-				HttpStatus.OK
+					new PictureResponseDto(pictures),
+					HttpStatus.OK
 				);
 	}
 	
@@ -71,8 +71,8 @@ public class MyRestController {
 		contactServ.save(contact);
 		
 		return new ResponseEntity<>(
-				new ContactResponseDto(contact),
-				HttpStatus.OK
+					new ContactResponseDto(contact),
+					HttpStatus.OK
 				);
 	}
 }

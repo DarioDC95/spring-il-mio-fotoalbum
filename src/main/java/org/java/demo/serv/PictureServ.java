@@ -41,6 +41,10 @@ public class PictureServ {
 		
 		return pictureRepo.findByUserId(user);
 	}
+	public List<Picture> findPicturesByTitle(boolean visible, String title) {
+		
+		return pictureRepo.findByVisibleAndTitleContaining(visible, title);
+	}
 	@Transactional
 	public Optional<Picture> findByIdWithCategories(int id) {
 		

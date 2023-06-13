@@ -12,4 +12,5 @@ public interface PictureRepo extends JpaRepository<Picture, Integer> {
 	public List<Picture> findByTitleContaining(String title);
 	public List<Picture> findByTitleContainingAndUserId(String title, int id);
 	public List<Picture> findByUserId(int id);
+	public List<Picture> findByVisibleAndTitleContaining(boolean visible, String title);
 }
