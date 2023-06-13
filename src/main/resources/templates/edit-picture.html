@@ -12,14 +12,14 @@
 			<div class="row">
 				<div class="col-12">
 					<div class="w-100 d-flex justify-content-between align-items-center">
-						<h1 class="mb-3">Aggiungi la tua Foto</h1>
+						<h1 class="mb-3">Modifica la tua Foto</h1>
 						<a th:href="@{/picture/index}" type="submit" class="btn btn-primary">Back</a>
 					</div>
 				</div>
 				<div class="col-12">
 					<form method="POST">
 						<input type="number" name="user" th:value="${userId}" hidden>
-						<div class="mb-3">
+						<div class="mb-3" sec:authorize="hasAuthority('ADMIN')">
 						  	<label for="name" class="form-label">Titolo</label>
 						  	<input type="text" class="form-control" id="title" placeholder="titolo della foto" 
 						  	name="title" th:value="${picture.title}">
@@ -30,7 +30,7 @@
 								[[ ${errors.getFieldError('title').defaultMessage} ]]
 							</label>
 						</div>
-						<div class="mb-3">
+						<div class="mb-3" sec:authorize="hasAuthority('ADMIN')">
 						  	<label for="description" class="form-label">Descrizione</label>
 						  	<input type="text" class="form-control" id="description" placeholder="description" 
 						  	name="description" th:value="${picture.description}">
@@ -41,7 +41,7 @@
 								[[ ${errors.getFieldError('description').defaultMessage} ]]
 							</label>
 						</div>
-						<div class="mb-3">
+						<div class="mb-3" sec:authorize="hasAuthority('ADMIN')">
 						  	<label for="picture" class="form-label">Foto</label>
 						  	<input type="text" class="form-control" id="url" placeholder="url dell'immagine" 
 						  	name="url" th:value="${picture.url}">
@@ -69,7 +69,7 @@
 							  	</label>
 							</div>
 						</div>
-						<div class="mb-3">
+						<div class="mb-3" sec:authorize="hasAuthority('ADMIN')">
 						  	<label for="price" class="form-label">Categorie: </label>
 						  	<div 
 						  	class="form-check"

@@ -152,13 +152,12 @@ public class PictureController {
 		return "redirect:/picture/index";
 	}
 	
-	@GetMapping("edit/{id}")
-	public String edit(Model model, Authentication authentication, @PathVariable("id") int id) {
+	/* route edit just for SUPER_ADMIN to circumvent the @Valid since I want render inaccessible the inputs of the other 
+	 * fields of the form from the inspection too*/
+	@GetMapping("edit/{id}/super_admin")
+	public String editSuperAdmin(Model model, @PathVariable("id") int id) {
 		
-		User user = (User) authentication.getPrincipal();
-		Integer userId = null;
-		List<Picture> pictures = null;
-		
+		List<Picture> pictures = pictureServ.findAll();
 		Optional<Picture> optPicture = pictureServ.findById(id);
 		
 		if(optPicture.isEmpty()) {
@@ -173,15 +172,45 @@ public class PictureController {
 		
 		Picture picture = optPicture.get();
 		
-		if(user.getRoles().stream().map(a -> a.getName()).collect(Collectors.toList()).contains("SUPER_ADMIN")) {
+		model.addAttribute("picture", picture);
+		
+		return "edit-picture";
+	}
+	
+	@PostMapping("edit/{id}/super_admin")
+	public String updateSuperAdmin(Model model, @PathVariable("id") int id, @RequestParam(required = true) Boolean visible) {
+		
+		Optional<Picture> optPicture = pictureServ.findById(id);
+		
+		Picture picture = optPicture.get();
+		picture.setVisible(visible);
+		
+		pictureServ.save(picture);
+		
+		return "redirect:/picture/index";
+	}
+	//end custom edit for super_admin
+	
+	@GetMapping("edit/{id}")
+	public String edit(Model model, Authentication authentication, @PathVariable("id") int id) {
+		
+		User user = (User) authentication.getPrincipal();
+		Integer userId = user.getId();
+		List<Picture> pictures = pictureServ.findPicturesByUserId(userId);
+		
+		Optional<Picture> optPicture = pictureServ.findById(id);
+		
+		if(optPicture.isEmpty()) {
 			
-			userId = picture.getUser().getId();
-			pictures = pictureServ.findAll();
-		} else {
+			String error = "Elemento non trovato";
 			
-			userId = user.getId();
-			pictures = pictureServ.findPicturesByUserId(userId);
+			model.addAttribute("pictures", pictures);
+			model.addAttribute("error", error);
+			
+			return "index-picture";
 		}
+		
+		Picture picture = optPicture.get();
 		
 		if(pictures.contains(picture) == false) {
 			
@@ -201,14 +230,7 @@ public class PictureController {
 	public String update(Model model, Authentication authentication, @Valid @ModelAttribute Picture picture, BindingResult bindingResult) {
 		
 		User user = (User) authentication.getPrincipal();
-		Integer userId = null;
-		if(user.getRoles().stream().map(a -> a.getName()).collect(Collectors.toList()).contains("SUPER_ADMIN")) {
-			
-			userId = picture.getUser().getId();
-		} else {
-			
-			userId = user.getId();
-		}
+		Integer userId = user.getId();
 		
 		if (bindingResult.hasErrors()) {
 			

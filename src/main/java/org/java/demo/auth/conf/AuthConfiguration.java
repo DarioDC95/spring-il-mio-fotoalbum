@@ -24,8 +24,8 @@ public class AuthConfiguration {
 		return 
 			http.csrf(c -> c.disable()).authorizeHttpRequests(a -> a
 					.requestMatchers("/picture/index").hasAnyAuthority("ADMIN", "SUPER_ADMIN")
-					.requestMatchers("/picture/edit/{id}").hasAnyAuthority("ADMIN", "SUPER_ADMIN")
 					.requestMatchers("/picture/by/title").hasAnyAuthority("ADMIN", "SUPER_ADMIN")
+					.requestMatchers("/picture/edit/{id}/super_admin").hasAuthority("SUPER_ADMIN")
 			        .requestMatchers("/picture/**").hasAuthority("ADMIN")
 			        .requestMatchers("/category/**").hasAuthority("ADMIN")
 			    
