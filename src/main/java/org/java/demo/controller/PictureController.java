@@ -41,6 +41,10 @@ public class PictureController {
 		User user = (User) authentication.getPrincipal();
 		
 		List<Picture> pictures = null;
+		
+		//si può fare anche così
+		/*boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(role -> role.getAuthority().equals("ADMIN"));*/
 		if(user.getRoles().stream().map(a -> a.getName()).collect(Collectors.toList()).contains("SUPER_ADMIN")) {
 			
 			pictures = pictureServ.findAll();
